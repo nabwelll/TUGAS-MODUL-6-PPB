@@ -56,10 +56,12 @@ export const Api = {
     });
   },
   verifyToken(token) {
-    return request("/api/auth/verify", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const previousToken = authToken;
+    setAuthToken(token);
+    const result = request("/api/auth/verify");
+    if (!result) {
+      setAuthToken(previousToken);
+    }
+    return result;
   },
 };

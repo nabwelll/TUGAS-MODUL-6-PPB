@@ -2,6 +2,10 @@ import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET || "ppb-iot-watch-secret-key-2024";
 
+if (!process.env.JWT_SECRET) {
+  console.warn("WARNING: JWT_SECRET not set in environment. Using default secret (not recommended for production)");
+}
+
 export function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1]; // Bearer TOKEN

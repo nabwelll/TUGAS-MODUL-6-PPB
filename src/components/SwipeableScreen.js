@@ -18,6 +18,8 @@ export function SwipeableScreen({ children }) {
       if (event.velocityX < 0 && currentIndex < availableRoutes.length - 1) {
         // Swipe left - go to next screen
         const nextRoute = availableRoutes[currentIndex + 1];
+        // Only navigate if the route exists in the tab navigator
+        // The tab navigator itself handles hiding protected routes
         navigation.navigate(nextRoute);
       } else if (event.velocityX > 0 && currentIndex > 0) {
         // Swipe right - go to previous screen

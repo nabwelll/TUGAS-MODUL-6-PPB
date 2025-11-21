@@ -3,20 +3,23 @@ import bcrypt from "bcryptjs";
 
 const JWT_SECRET = process.env.JWT_SECRET || "ppb-iot-watch-secret-key-2024";
 
+if (!process.env.JWT_SECRET) {
+  console.warn("WARNING: JWT_SECRET not set in environment. Using default secret (not recommended for production)");
+}
+
 // Simple in-memory user store (in production, use a database)
+// Pre-hash the default password "admin123"
+const defaultPasswordHash = bcrypt.hashSync("admin123", 10);
+
 const users = [
   {
     id: 1,
     username: "admin",
-    password: "$2a$10$X5JKvv5W5v5v5v5v5v5v5.5v5v5v5v5v5v5v5v5v5v5v5", // hashed "admin123"
+    password: defaultPasswordHash,
     name: "Administrator",
     email: "admin@iotwatch.com",
   },
 ];
-
-// Pre-hash the default password
-const defaultPasswordHash = bcrypt.hashSync("admin123", 10);
-users[0].password = defaultPasswordHash;
 
 export const AuthController = {
   async login(req, res) {
