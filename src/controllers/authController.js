@@ -4,17 +4,24 @@ import bcrypt from "bcryptjs";
 const JWT_SECRET = process.env.JWT_SECRET || "ppb-iot-watch-secret-key-2024";
 
 if (!process.env.JWT_SECRET) {
-  console.warn("WARNING: JWT_SECRET not set in environment. Using default secret (not recommended for production)");
+  console.warn("⚠️  WARNING: JWT_SECRET not set in environment. Using default secret.");
+  console.warn("⚠️  This is NOT secure for production! Set JWT_SECRET in .env file.");
+  
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("JWT_SECRET must be set in production environment");
+  }
 }
 
-// Simple in-memory user store (in production, use a database)
+// Simple in-memory user store for demonstration purposes only
+// ⚠️ IMPORTANT: In production, users should be stored in a secure database
+// with passwords loaded from environment variables or secure configuration
 // Note: Password is pre-hashed to avoid blocking event loop at startup
-// In production, store pre-hashed passwords in the database
 const users = [
   {
     id: 1,
     username: "admin",
     // Password: "admin123" (pre-hashed with bcrypt, 10 rounds)
+    // This is for demo/development only - never hardcode credentials in production!
     password: "$2a$10$Msh8r.bQDvwkCwi3VcsDBOiE4zFyj9bpnyNXLcomYjVeJOtFOhNnK",
     name: "Administrator",
     email: "admin@iotwatch.com",

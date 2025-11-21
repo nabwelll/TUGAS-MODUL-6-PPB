@@ -3,7 +3,12 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.JWT_SECRET || "ppb-iot-watch-secret-key-2024";
 
 if (!process.env.JWT_SECRET) {
-  console.warn("WARNING: JWT_SECRET not set in environment. Using default secret (not recommended for production)");
+  console.warn("⚠️  WARNING: JWT_SECRET not set in environment. Using default secret.");
+  console.warn("⚠️  This is NOT secure for production! Set JWT_SECRET in .env file.");
+  
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("JWT_SECRET must be set in production environment");
+  }
 }
 
 export function authenticateToken(req, res, next) {

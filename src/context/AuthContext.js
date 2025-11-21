@@ -28,8 +28,14 @@ export function AuthProvider({ children }) {
         try {
           await Api.verifyToken(storedToken);
         } catch (error) {
-          // Token is invalid, clear it
-          await logout();
+          // Token is invalid or network error occurred
+          console.log("Token verification failed:", error.message);
+          // Only logout if it's an authentication error (401/403), not network error
+          if (error.message.includes("401") || error.message.includes("403") || 
+              error.message.includes("token") || error.message.includes("expired")) {
+            await logout();
+          }
+          // For network errors, keep the token and try again later
         }
       }
     } catch (error) {
