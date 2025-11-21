@@ -55,13 +55,15 @@ export const Api = {
       body: JSON.stringify({ username, password }),
     });
   },
-  verifyToken(token) {
+  async verifyToken(token) {
     const previousToken = authToken;
     setAuthToken(token);
-    const result = request("/api/auth/verify");
-    if (!result) {
+    try {
+      const result = await request("/api/auth/verify");
+      return result;
+    } catch (error) {
       setAuthToken(previousToken);
+      throw error;
     }
-    return result;
   },
 };

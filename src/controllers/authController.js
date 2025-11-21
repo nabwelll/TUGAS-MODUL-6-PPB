@@ -8,14 +8,14 @@ if (!process.env.JWT_SECRET) {
 }
 
 // Simple in-memory user store (in production, use a database)
-// Pre-hash the default password "admin123"
-const defaultPasswordHash = bcrypt.hashSync("admin123", 10);
-
+// Note: Password is pre-hashed to avoid blocking event loop at startup
+// In production, store pre-hashed passwords in the database
 const users = [
   {
     id: 1,
     username: "admin",
-    password: defaultPasswordHash,
+    // Password: "admin123" (pre-hashed with bcrypt, 10 rounds)
+    password: "$2a$10$Msh8r.bQDvwkCwi3VcsDBOiE4zFyj9bpnyNXLcomYjVeJOtFOhNnK",
     name: "Administrator",
     email: "admin@iotwatch.com",
   },
