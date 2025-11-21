@@ -1,16 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-
-const JWT_SECRET = process.env.JWT_SECRET || "ppb-iot-watch-secret-key-2024";
-
-if (!process.env.JWT_SECRET) {
-  console.warn("⚠️  WARNING: JWT_SECRET not set in environment. Using default secret.");
-  console.warn("⚠️  This is NOT secure for production! Set JWT_SECRET in .env file.");
-  
-  if (process.env.NODE_ENV === "production") {
-    throw new Error("JWT_SECRET must be set in production environment");
-  }
-}
+import { JWT_CONFIG } from "../config/security.js";
 
 // Simple in-memory user store for demonstration purposes only
 // ⚠️ IMPORTANT: In production, users should be stored in a secure database
@@ -52,8 +42,8 @@ export const AuthController = {
       // Generate token
       const token = jwt.sign(
         { id: user.id, username: user.username, name: user.name },
-        JWT_SECRET,
-        { expiresIn: "24h" }
+        JWT_CONFIG.SECRET,
+        { expiresIn: JWT_CONFIG.EXPIRY }
       );
 
       res.json({

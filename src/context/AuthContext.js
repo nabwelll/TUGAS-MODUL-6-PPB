@@ -30,9 +30,18 @@ export function AuthProvider({ children }) {
         } catch (error) {
           // Token is invalid or network error occurred
           console.log("Token verification failed:", error.message);
-          // Only logout if it's an authentication error (401/403), not network error
-          if (error.message.includes("401") || error.message.includes("403") || 
-              error.message.includes("token") || error.message.includes("expired")) {
+          
+          // Check if it's an authentication error vs network error
+          const isAuthError = 
+            error.message.toLowerCase().includes("401") ||
+            error.message.toLowerCase().includes("403") ||
+            error.message.toLowerCase().includes("unauthorized") ||
+            error.message.toLowerCase().includes("forbidden") ||
+            error.message.toLowerCase().includes("token") ||
+            error.message.toLowerCase().includes("expired");
+          
+          if (isAuthError) {
+            // Clear invalid token
             await logout();
           }
           // For network errors, keep the token and try again later
