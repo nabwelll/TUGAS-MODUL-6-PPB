@@ -13,6 +13,7 @@ import { useMqttSensor } from "../hooks/useMqttSensor.js";
 import { Api } from "../services/api.js";
 import { DataTable } from "../components/DataTable.js";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { SwipeableScreen } from "../components/SwipeableScreen.js";
 
 export function MonitoringScreen() {
   const { temperature, timestamp, connectionState, error: mqttError } = useMqttSensor();
@@ -70,6 +71,7 @@ export function MonitoringScreen() {
   }
 
   return (
+    <SwipeableScreen>
     <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
     <ScrollView
       style={styles.container}
@@ -126,6 +128,7 @@ export function MonitoringScreen() {
       </View>
     </ScrollView>
     </SafeAreaView>
+    </SwipeableScreen>
   );
 }
 

@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import readingsRoutes from "./routes/readingsRoutes.js";
 import thresholdsRoutes from "./routes/thresholdsRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/auth", authRoutes);
 app.use("/api/readings", readingsRoutes);
 app.use("/api/thresholds", thresholdsRoutes);
 

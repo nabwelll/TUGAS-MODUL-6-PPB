@@ -1,15 +1,27 @@
 import { BACKEND_URL } from "./config.js";
 
+let authToken = null;
+
+export function setAuthToken(token) {
+  authToken = token;
+}
+
 async function request(path, options = {}) {
   if (!BACKEND_URL) {
     throw new Error("BACKEND_URL is not set in app.json");
   }
 
+  const headers = {
+    "Content-Type": "application/json",
+    ...(options.headers || {}),
+  };
+
+  if (authToken) {
+    headers["Authorization"] = `Bearer ${authToken}`;
+  }
+
   const response = await fetch(`${BACKEND_URL}${path}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
+    headers,
     ...options,
   });
 
@@ -36,5 +48,22 @@ export const Api = {
       method: "POST",
       body: JSON.stringify(payload),
     });
+  },
+  login(username, password) {
+    return request("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ username, password }),
+    });
+  },
+  async verifyToken(token) {
+    const previousToken = authToken;
+    setAuthToken(token);
+    try {
+      const result = await request("/api/auth/verify");
+      return result;
+    } catch (error) {
+      setAuthToken(previousToken);
+      throw error;
+    }
   },
 };
