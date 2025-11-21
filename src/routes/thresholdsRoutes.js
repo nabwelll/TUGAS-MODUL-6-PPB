@@ -6,7 +6,7 @@ import { apiLimiter } from "../middleware/rateLimiter.js";
 const router = express.Router();
 
 router.get("/", ThresholdsController.list);
-router.post("/", authenticateToken, apiLimiter, ThresholdsController.create);
+router.post("/", apiLimiter, authenticateToken, ThresholdsController.create);
 router.get("/latest", ThresholdsController.latest);
 
 export default router;
