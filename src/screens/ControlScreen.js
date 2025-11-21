@@ -14,6 +14,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Api } from "../services/api.js";
 import { DataTable } from "../components/DataTable.js";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { SwipeableScreen } from "../components/SwipeableScreen.js";
 
 export function ControlScreen() {
   const [thresholdValue, setThresholdValue] = useState(30);
@@ -65,6 +66,7 @@ export function ControlScreen() {
   }, [thresholdValue, note, fetchHistory]);
 
   return (
+    <SwipeableScreen>
     <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -133,6 +135,7 @@ export function ControlScreen() {
       </ScrollView>
     </KeyboardAvoidingView>
     </SafeAreaView>
+    </SwipeableScreen>
   );
 }
 
